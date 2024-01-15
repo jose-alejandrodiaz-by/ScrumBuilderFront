@@ -8,7 +8,7 @@ const MyApp = ({ Component, pageProps }) => {
   
   return (
     <AuthProvider>
-    <Home/>
+    <div class="flex items-center justify-center h-screen"><Home/></div>
     </AuthProvider>
     );
   

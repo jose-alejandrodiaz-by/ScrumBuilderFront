@@ -10,17 +10,18 @@ export default function Home() {
   const { user, logout } = useAuth();
   console.log(user + " log")
  return (
-    <div>
-      <h1>Welcome to the Home Page</h1>
+    <div class="flex flex-col items-center justify-center h-screen space-y-4">
+      
+      <div class="text-2xl font-bold text-center py-2">Welcome to the Home Page</div>
       {user ? (
         <div>
           <p>Hello, {user.username}!</p>
-          <button onClick={logout}>Logout</button>
+          <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={logout}>Logout</button>
         </div>
       ) : (
-        <div>
-          <p>Please log in to access the content.</p>
-          <Link href="/login" id="login">
+        <div class="flex flex-col items-center space-y-4">
+          <p>Please log in to access the scrum builder UI</p>
+          <Link class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="/login" id="login">
             login
           </Link>
         </div>

@@ -62,18 +62,22 @@ const LoginForm = () => {
   };
 
   return (
-    <form onSubmit={handleLogin}>
+    <form class="flex flex-col items-center justify-center" onSubmit={handleLogin}>
       <label>
         Username:
-        <input type="text" value={user_name} onChange={(e) => setUsername(e.target.value)} />
+        <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
+        type="text" value={user_name} onChange={(e) => setUsername(e.target.value)} />
       </label>
       <br />
       <label>
         Password:
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input 
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
       </label>
       <br />
-      <button type="submit" disabled={loading}>
+      <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit" disabled={loading}>
         {loading ? 'Logging in...' : 'Login'}
       </button>
     </form>
