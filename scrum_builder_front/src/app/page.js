@@ -4,11 +4,18 @@
 import { AuthProvider } from '../context/AuthContext';
 import Home from './home'
 
+
+
 const MyApp = ({ Component, pageProps }) => {
   
   return (
     <AuthProvider>
-    <div class="flex items-center justify-center h-screen"><Home/></div>
+    <div className="flex items-center justify-center h-screen">
+  
+      <Home/>
+
+    </div>
+    
     </AuthProvider>
     );
   
