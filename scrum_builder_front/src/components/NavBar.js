@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 const Navigation = ({ isLoggedIn }) => {
     const { user, logout } = useAuth();
   return (
-    <nav className="bg-gray-800 text-white p-4">
+    <nav className="sticky top-0 bg-gray-800 text-white p-4">
       <ul className="flex space-x-4">
         <li>
           <Link href="/" className="hover:text-blue-300">

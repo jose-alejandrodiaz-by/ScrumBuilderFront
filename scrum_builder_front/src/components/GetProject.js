@@ -1,22 +1,30 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProjectsServices from '../Services/ProjectsServices'; // import the service
+import Project from '@/components/Project'
+import { data } from 'autoprefixer';
+import  testproject from '../../testingResources/projectObject'
 
 const GetProject = () => {
     const [id, setId] = useState('');
     const router = useRouter();
+    const [info, setInfo] = useState(testproject);
 
     const getData = async (e) => {
         e.preventDefault();
         try {
             const data = await ProjectsServices.getProject(id); // use the service to get the data
             console.log(data); // log the data or do something with it
+            setInfo(data);
         } catch (error) {
             console.error(error); // handle the error
         }
     }
 
+    
+
     return (
+        <div>
         <form className="flex flex-col items-center justify-center" onSubmit={getData}>
             <label>
                 ID
@@ -32,6 +40,11 @@ const GetProject = () => {
                 Get
             </button>
         </form>
+
+        {info.id ? info.project_name:"nothing" }
+        <Project project={info.project_name ? info : testproject} />
+        </div>
+
     );
 };
 
