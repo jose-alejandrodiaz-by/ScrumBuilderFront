@@ -1,4 +1,4 @@
-const project = {
+const testproject = {
     "id": 54,
     "project_name": "Medtronic TMS 2022.1.0",
     "project_code": "MTTM22",
@@ -54,3 +54,5 @@ const project = {
       }
     ]
   }
+
+  export default testproject
