@@ -3,7 +3,7 @@
 // app/_app.js
 import { AuthProvider } from '../context/AuthContext';
 import Home from './home'
-import ProjectForm from '@/components/ProjectForm'
+import ProjectForm from '../components/ProjectForm'
 import NavBar from '../components/NavBar'
 
 

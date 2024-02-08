@@ -10,6 +10,18 @@ const FormComponent = () => {
     environments: [],
   });
 
+  const projectTypeOptions = [
+    { id: 1, name: 'project 1' },
+    { id: 2, name: 'project 2' },
+    // Add more module options as needed
+  ];
+
+  const platformTypeOptions = [
+    { id: 1, name: 'platform 1' },
+    { id: 2, name: 'platform 2' },
+    // Add more module options as needed
+  ];
+
   const moduleOptions = [
     { id: 1, name: 'Module 1' },
     { id: 2, name: 'Module 2' },
@@ -18,25 +30,40 @@ const FormComponent = () => {
 
   const EnvironmentOptions = [
     { id: 1, name: 'environment1' },
-    { id: 2, name: 'environmnet2' },
+    { id: 2, name: 'environment2' },
     // Add more module options as needed
   ];
 
   const handleInputChange = (event) => {
+    const value = event.target.name === 'projectTypeId' || event.target.name === 'platformId' 
+      ? Number(event.target.value) 
+      : event.target.value;
+  
     setFormState({
       ...formState,
-      [event.target.name]: event.target.value,
+      [event.target.name]: value,
     });
   };
 
   const handleCheckboxChange = (event) => {
-    if (event.target.checked) {
-      setFormState((prevState) => ({
-        ...prevState,
-        [event.target.name]: [...prevState[event.target.name], { id: Number(event.target.value) }],
-      }));
-    }
+    const { name, value, checked } = event.target;
+    const newValue = { id: Number(value) };
+  
+    setFormState((prevState) => {
+      if (checked) {
+        return {
+          ...prevState,
+          [name]: [...prevState[name], newValue],
+        };
+      } else {
+        return {
+          ...prevState,
+          [name]: prevState[name].filter(item => item.id !== newValue.id),
+        };
+      }
+    });
   };
+  
   
 
   const handleSubmit = async (event) => {
@@ -57,74 +84,56 @@ const FormComponent = () => {
   };
 
   return (
-    <div className="flex flex-col p-8 bg-white shadow-md rounded-md">
+    <div className="flex flex-col p-9 bg-white shadow-md rounded-md">
     <form onSubmit={handleSubmit} className="flex flex-col p-8 bg-white shadow-md rounded-md">
       <input
         type="text"
         name="projectName"
         placeholder="Project Name"
+        value={formState.projectName}
         onChange={handleInputChange}
-        className="mb-4 p-2 border border-gray-300 rounded-md"
+        className="mb-4 p-4 border border-gray-300 rounded-md"
       />
       <input
         type="text"
         name="projectCode"
         placeholder="Project Code"
+        value={formState.projectCode}
         onChange={handleInputChange}
-        className="mb-4 p-2 border border-gray-300 rounded-md"
+        className="mb-4 p-4 border border-gray-300 rounded-md"
       />
-      <div className="mb-4">
-        <label>
+      <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
+      {projectTypeOptions.map(projectType =>(
+        <label key={projectType.id} className="flex-1">
           <input
             type="radio"
             name="projectTypeId"
-            value="1"
+            value= {projectType.id}
+            checked={formState.projectTypeId === projectType.id}
             onChange={handleInputChange}
+            
           />
-          NI
+          {projectType.name}
         </label>
-        <label>
-          <input
-            type="radio"
-            name="projectTypeId"
-            value="2"
-            onChange={handleInputChange}
-          />
-          Upg
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="projectTypeId"
-            value="3"
-            onChange={handleInputChange}
-          />
-          J2C
-        </label>
+        ))}
       </div>
-      <div className="mb-4">
-        <label>
+      <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
+      {platformTypeOptions.map(platformType =>(
+        <label key={platformType.id} className="flex-1">
           <input
             type="radio"
             name="platformId"
-            value="1"
+            value= {platformType.id}
+            checked={formState.platformId === platformType.id}
             onChange={handleInputChange}
           />
-          PC
+          {platformType.name}
         </label>
-        <label>
-          <input
-            type="radio"
-            name="platformId"
-            value="2"
-            onChange={handleInputChange}
-          />
-          AZ
-        </label>
+        ))}
       </div>
-      <div className="mb-4">
+      <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
           {moduleOptions.map((option) => (
-            <label key={option.id}>
+            <label key={option.id} className="flex-1">
               <input
                 type="checkbox"
                 name="modules"
@@ -136,9 +145,9 @@ const FormComponent = () => {
             </label>
           ))}
         </div>
-        <div className="mb-4">
+        <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2 items-center">
           {EnvironmentOptions.map((option) => (
-            <label key={option.id}>
+            <label key={option.id} className="flex-1">
               <input
                 type="checkbox"
                 name="environments"
