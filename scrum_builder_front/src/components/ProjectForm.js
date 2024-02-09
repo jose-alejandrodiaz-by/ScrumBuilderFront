@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-const FormComponent = () => {
+
+
+const FormComponent = ({ onSubmit }) => {
   const [formState, setFormState] = useState({
     projectName: '',
     projectCode: '',
@@ -81,6 +83,9 @@ const FormComponent = () => {
       });
 
 //service logic here
+      if (onSubmit) {
+        onSubmit();
+      }
   };
 
   return (

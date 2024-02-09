@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
@@ -8,13 +8,18 @@ const LoginForm = () => {
   const router = useRouter(); // Initialize useRouter
   const [user_name, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { login, loading} = useAuth();
-  const { user } = useAuth();
+  const { login, loading, user} = useAuth();
   
-  //console.log("checking user", user)
-  if (user && !loading) {
+  useEffect(() => {
+    if (user && !loading) {
       router.push('/');
     }
+  }, [user, loading, router]);
+
+  //console.log("checking user", user)
+  //if (user && !loading) {
+  //    router.push('/');
+  //  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
