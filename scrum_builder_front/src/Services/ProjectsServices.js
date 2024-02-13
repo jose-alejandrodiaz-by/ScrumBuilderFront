@@ -14,12 +14,11 @@ const getProject = async id =>{
     return response.data;
 };
 
-const getAllProjects = async ()  => {
-  const response = await instance.get('Projects/');
-  return response.data;
+async function getAllProjects() {
+  return await instance.get('Projects/');
 }
 
-export default {
+export {
     getProject, getAllProjects
 }
 
