@@ -9,6 +9,21 @@ const instance = axios.create({
   headers:  { Authorization: `Bearer ${token}` }
 })
 
+const postProject = async data => {
+  try {
+    const response = await instance.post(`Projects/`, {
+      data,
+    });
+    // Handle successful response
+    console.log("Project succesfully created")
+    return response.data;
+  } catch (error) {
+    // Handle errors
+    console.error('Error posting project:', error.message);
+    throw error;
+  }
+};
+
 const getProject = async id =>{
     const response = await instance.get(`Projects/${id}`);
     return response.data;
@@ -19,7 +34,7 @@ async function getAllProjects() {
 }
 
 export {
-    getProject, getAllProjects
+    getProject, getAllProjects, postProject
 }
 
 
