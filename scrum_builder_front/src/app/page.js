@@ -3,7 +3,7 @@
 // app/_app.js
 import { AuthProvider } from '../context/AuthContext';
 import Home from './home'
-import Project from '../components/Project'
+import ProjectForm from '../components/ProjectForm'
 import NavBar from '../components/NavBar'
 
 
@@ -17,6 +17,8 @@ const MyApp = ({ Component, pageProps }) => {
       <Home/>
       <br/>
       <h3>Testing components</h3>
+      <ProjectForm/>
+
     </div>
     
     </AuthProvider>
