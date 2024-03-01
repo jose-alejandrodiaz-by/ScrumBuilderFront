@@ -35,12 +35,11 @@ export function useGetProject(id:string|string[]){
     useEffect(()=>{
         getProject(id)
         .then((res)=>{
-            setProject(res.data)
+            setProject(res)
             setLoading(false)
         })
         .catch((err)=>{
             setError({"isError":true, "errorMessage":err.message})
-            console.error(err)
         })
     },[])
 
