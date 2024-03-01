@@ -6,12 +6,14 @@ import { ColumnsType } from "antd/es/table";
 import Link from "next/link";
 import React from "react";
 import {useGetAllProjects} from "../../hooks/projects";
+import { AuthProvider } from "../../context/AuthContext";
 
 
 const cols:ColumnsType<AnyObject> = [
-    {title: 'id', dataIndex: 'id',render: (text:string, record:{[key:string]:string})=>{
-			return <Link href={`/${record.id.toString()}/` }>{text}</Link>},}, 
-    {title: 'Project name', dataIndex:'project_name'}, 
+    {title: 'Project name', dataIndex:'project_name', 
+      filterSearch: true, onFilter: (value:string, record:{[key:string]:string})=>record.name.startsWith(value),
+      render: (text:string, record:{[key:string]:string})=>{
+			return <Link href={`all-projects/${record.id.toString()}/` }>{text}</Link>}}, 
     {title: 'Project Type', dataIndex:'project_type_id', render:(record:{[key:string]:string})=>{
       return record.project_type_id==='1' ? <td>New Implementation</td> : record.project_type_id === '2' ? <td>Upgrade</td> : <td>J2C</td>
     }}, 
@@ -32,15 +34,13 @@ const cols:ColumnsType<AnyObject> = [
 function Page(){
   const {projects, error: {isError, errorMessage}, loading} = useGetAllProjects();
   return (
-    <>
+    <AuthProvider>
       <h1>Projects</h1>
       {loading? <h1>Loading...</h1> :
         isError? <h1>{errorMessage}</h1> :
         <Table columns={cols} dataSource={projects} />
       } 
-    </>
-        
-
+    </AuthProvider>
   );
 };
 
