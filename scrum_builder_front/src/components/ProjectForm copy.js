@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 
 const FormComponent = ({ onSubmit }) => {
   const [formState, setFormState] = useState({
-    project_name: '',
-    project_code: '',
-    project_type_id: '',
-    platform_id: '',
+    projectName: '',
+    projectCode: '',
+    projectTypeId: '',
+    platformId: '',
     modules: [],
     environments: [],
   });
@@ -37,7 +37,7 @@ const FormComponent = ({ onSubmit }) => {
   ];
 
   const handleInputChange = (event) => {
-    const value = event.target.name === 'project_type_id' || event.target.name === 'platform_id' 
+    const value = event.target.name === 'projectTypeId' || event.target.name === 'platformId' 
       ? Number(event.target.value) 
       : event.target.value;
   
@@ -74,10 +74,10 @@ const FormComponent = ({ onSubmit }) => {
     console.log(data)
 
     setFormState({
-        project_name: '',
-        project_code: '',
-        project_type_id: '',
-        platform_id: '',
+        projectName: '',
+        projectCode: '',
+        projectTypeId: '',
+        platformId: '',
         modules: [],
         environments: [],
       });
@@ -93,17 +93,17 @@ const FormComponent = ({ onSubmit }) => {
     <form onSubmit={handleSubmit} className="flex flex-col p-9 bg-white shadow-md rounded-md">
       <input
         type="text"
-        name="project_name"
+        name="projectName"
         placeholder="Project Name"
-        value={formState.project_name}
+        value={formState.projectName}
         onChange={handleInputChange}
         className="mb-4 p-4 border border-gray-300 rounded-md"
       />
       <input
         type="text"
-        name="project_code"
+        name="projectCode"
         placeholder="Project Code"
-        value={formState.project_code}
+        value={formState.projectCode}
         onChange={handleInputChange}
         className="mb-4 p-4 border border-gray-300 rounded-md"
       />
@@ -112,10 +112,10 @@ const FormComponent = ({ onSubmit }) => {
         <label key={projectType.id} className="flex-1">
           <input
             type="radio"
-            name="project_type_id"
+            name="projectTypeId"
             style={{ marginRight: '0.5rem' }} 
             value= {projectType.id}
-            checked={formState.project_type_id === projectType.id}
+            checked={formState.projectTypeId === projectType.id}
             onChange={handleInputChange}
             
           />
@@ -129,9 +129,9 @@ const FormComponent = ({ onSubmit }) => {
           <input
             type="radio"
             style={{ marginRight: '0.5rem' }} 
-            name="platform_id"
+            name="platformId"
             value= {platformType.id}
-            checked={formState.platform_id === platformType.id}
+            checked={formState.platformId === platformType.id}
             onChange={handleInputChange}
           />
           {platformType.name}
