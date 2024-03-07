@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ProjectsServices from '../Services/ProjectsServices'; // import the service
-import Project from '@/components/Project'
-import { data } from 'autoprefixer';
+import Project from './Project';
 import  testproject from '../../testingResources/projectObject'
 
 const GetProject = () => {
