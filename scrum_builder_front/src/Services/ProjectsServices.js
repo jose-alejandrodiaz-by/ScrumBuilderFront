@@ -5,7 +5,7 @@ const token = Cookies.get('jwt_token');
 
 const instance = axios.create({
   baseURL: "https://localhost:7041/api/",
-  timeout: 1000,
+  timeout: 100000,
   headers:  { Authorization: `Bearer ${token}` }
 })
 

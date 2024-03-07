@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import GetProject from '../../components/GetProject';
 import { AuthProvider } from '../../context/AuthContext';
-import ProtectedRoute from '@/components/ProtectedRoute';
 import NavBar from '../../components/NavBar';
 import ProjectForm from '../../components/ProjectForm';
+import ProtectedRoute from '../../components/ProtectedRoute'
 
 const Page = () => {
   const [showProjectForm, setShowProjectForm] = useState(false);

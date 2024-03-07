@@ -4,16 +4,20 @@ import { Table } from "antd";
 import { AnyObject } from "antd/es/_util/type";
 import { ColumnsType } from "antd/es/table";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import {useGetAllProjects} from "../../hooks/projects";
 import { AuthProvider } from "../../context/AuthContext";
+import NavBar from '../../components/NavBar'
+import { PageHeader } from "../../components/PageHeader";
 
 
 const cols:ColumnsType<AnyObject> = [
     {title: 'Project name', dataIndex:'project_name', 
-      filterSearch: true, onFilter: (value:string, record:{[key:string]:string})=>record.name.startsWith(value),
+      sorter: (a, b) => a.project_name.length - b.project_name.length,
+      filterSearch: true, onFilter: (value:string, record:{[key:string]:string})=>record.name.indexOf(value) === 0,
       render: (text:string, record:{[key:string]:string})=>{
-			return <Link href={`all-projects/${record.id.toString()}/` }>{text}</Link>}}, 
+			  return <Link href={`projects/${record.id.toString()}/` }>{text}</Link>}
+    }, 
     {title: 'Project Type', dataIndex:'project_type_id', render:(record:{[key:string]:string})=>{
       return record.project_type_id==='1' ? <td>New Implementation</td> : record.project_type_id === '2' ? <td>Upgrade</td> : <td>J2C</td>
     }}, 
@@ -33,13 +37,29 @@ const cols:ColumnsType<AnyObject> = [
 
 function Page(){
   const {projects, error: {isError, errorMessage}, loading} = useGetAllProjects();
+  const [page, setPage] = useState(1);
+
   return (
     <AuthProvider>
-      <h1>Projects</h1>
-      {loading? <h1>Loading...</h1> :
+      <NavBar isLoggedIn={undefined}/>
+      <div className="px-2">
+      <PageHeader title={"Projects"} goBack={true} 
+        actionButton={true} hasCrumbs={false}
+        toActionButton="projects/create-project/" textActionButton="Create New Project"/>
+       {loading? <h1>Loading...</h1> :
         isError? <h1>{errorMessage}</h1> :
-        <Table columns={cols} dataSource={projects} />
+        <Table columns={cols} dataSource={projects}
+          pagination={{
+            current: page,
+            pageSize: 10, 
+            onChange: (page: React.SetStateAction<number>)=>{
+              setPage(page);
+            }
+          }}
+          scroll={{ y: 400 }}
+        />
       } 
+      </div>
     </AuthProvider>
   );
 };
