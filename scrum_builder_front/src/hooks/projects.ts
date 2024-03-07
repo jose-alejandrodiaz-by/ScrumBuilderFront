@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import {getAllProjects, getProject} from "../Services/ProjectsServices";
+import {getAllProjects, getProject, postProject} from "../Services/ProjectsServices";
+import { Project } from "../types/Projects";
 
 export function useGetAllProjects(){
     const [projects, setAllProjects] = useState([]);
@@ -16,6 +17,7 @@ export function useGetAllProjects(){
             setLoading(false)
         })
         .catch((err)=>{
+            setLoading(false)
             setError({"isError":true, "errorMessage":err.message})
         })
     },[])
@@ -39,9 +41,33 @@ export function useGetProject(id:string|string[]){
             setLoading(false)
         })
         .catch((err)=>{
+            setLoading(false)
             setError({"isError":true, "errorMessage":err.message})
         })
     },[])
 
     return {project, loading, error}
+}
+
+export function usePostProject(data:Array<Project>){
+    const [loading, setLoading] = useState(true);    
+    const [error, setError] = useState({
+        "isError":false,
+        "errorMessage":""
+    });
+    const handleSubmit = (data:Array<Project>)=>{
+     postProject(data)
+        .then(()=>{
+            setLoading(false);
+        })
+        .catch((err)=>{
+            setLoading(false);
+            setError({
+                "isError":true, 
+                "errorMessage":err.message
+            })
+        })
+    };
+        
+    return {handleSubmit, loading, error}
 }
