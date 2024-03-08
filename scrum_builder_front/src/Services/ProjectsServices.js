@@ -11,7 +11,10 @@ const instance = axios.create({
 
 const postProject = async data => {
   try {
-    const response = await instance.post(`Projects/`, {
+    // const response = await instance.post(`Projects/`, {
+    //   data,
+    // });
+    const response = await instance.post(``, {
       data,
     });
     // Handle successful response

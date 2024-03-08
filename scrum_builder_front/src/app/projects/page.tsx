@@ -38,7 +38,8 @@ const cols:ColumnsType<AnyObject> = [
 function Page(){
   const {projects, error: {isError, errorMessage}, loading} = useGetAllProjects();
   const [page, setPage] = useState(1);
-
+  console.log(isError);
+  console.log(loading)
   return (
     <AuthProvider>
       <NavBar isLoggedIn={undefined}/>
@@ -46,8 +47,8 @@ function Page(){
       <PageHeader title={"Projects"} goBack={true} 
         actionButton={true} hasCrumbs={false}
         toActionButton="projects/create-project/" textActionButton="Create New Project"/>
-       {loading? <h1>Loading...</h1> :
-        isError? <h1>{errorMessage}</h1> :
+       {loading? <h1 font-semibold>Loading...</h1> :
+        isError? <h1 font-semibold>{errorMessage}</h1> :
         <Table columns={cols} dataSource={projects}
           pagination={{
             current: page,
