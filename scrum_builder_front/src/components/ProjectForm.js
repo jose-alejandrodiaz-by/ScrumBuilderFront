@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-
+import {useGetBasicPlatforms} from "../hooks/BasicPlatforms";
+import {useGetBasicEnvironments} from "../hooks/BasicEnvironments";
+import {useGetBasicModules} from "../hooks/BasicModules";
+import Project from './Project';
 
 
 const FormComponent = ({ onSubmit }) => {
@@ -12,29 +15,38 @@ const FormComponent = ({ onSubmit }) => {
     environments: [],
   });
 
+  const {platforms, error: {isError, errorMessage}, loading} = useGetBasicPlatforms();
+  const {modules, error_mod: {isError_mod, errorMessage_mod}, loading_mod} = useGetBasicModules();
+  const {environments, error_env: {isError_env, errorMessage_env}, loading_env} = useGetBasicEnvironments();
+  
   const projectTypeOptions = [
-    { id: 1, name: 'project 1' },
-    { id: 2, name: 'project 2' },
+    { id: 1, name: 'New Implementation' },
+    { id: 2, name: 'Upgrade' },
+    { id: 3, name: 'J2C' },
     // Add more module options as needed
   ];
 
-  const platformTypeOptions = [
-    { id: 1, name: 'platform 1' },
-    { id: 2, name: 'platform 2' },
-    // Add more module options as needed
-  ];
+  const platformTypeOptions=platforms
+  const moduleOptions=modules;
+  const EnvironmentOptions=environments
+//
+ //const platformTypeOptions = [
+ //  { id: 1, name: 'platform 1' },
+ //  { id: 2, name: 'platform 2' },
+ //  // Add more module options as needed
+ //];
+//
+  //const moduleOptions = [
+  //  { id: 1, name: 'Module 1' },
+  //  { id: 2, name: 'Module 2' },
+  //  // Add more module options as needed
+  //];
 
-  const moduleOptions = [
-    { id: 1, name: 'Module 1' },
-    { id: 2, name: 'Module 2' },
-    // Add more module options as needed
-  ];
-
-  const EnvironmentOptions = [
-    { id: 1, name: 'environment1' },
-    { id: 2, name: 'environment2' },
-    // Add more module options as needed
-  ];
+  //const EnvironmentOptions = [
+  //  { id: 1, name: 'environment1' },
+  //  { id: 2, name: 'environment2' },
+  //  // Add more module options as needed
+  //];
 
   const handleInputChange = (event) => {
     const value = event.target.name === 'project_type_id' || event.target.name === 'platform_id' 
@@ -97,7 +109,7 @@ const FormComponent = ({ onSubmit }) => {
         placeholder="Project Name"
         value={formState.project_name}
         onChange={handleInputChange}
-        className="mb-4 p-4 border border-gray-300 rounded-md"
+        className="mb-4 p-1 border border-gray-300 rounded-md"
       />
       <input
         type="text"
@@ -105,7 +117,7 @@ const FormComponent = ({ onSubmit }) => {
         placeholder="Project Code"
         value={formState.project_code}
         onChange={handleInputChange}
-        className="mb-4 p-4 border border-gray-300 rounded-md"
+        className="mb-4 p-1 border border-gray-300 rounded-md"
       />
       <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
       {projectTypeOptions.map(projectType =>(
@@ -120,11 +132,17 @@ const FormComponent = ({ onSubmit }) => {
             
           />
           {projectType.name}
+          
         </label>
         ))}
       </div>
       <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
-      {platformTypeOptions.map(platformType =>(
+      {loading ? (
+      <input name="..."/>
+      ): isError?(
+         <input name="error"/>
+        ):(
+          platformTypeOptions.map(platformType =>(
         <label key={platformType.id} className="flex-1">
           <input
             type="radio"
@@ -134,12 +152,20 @@ const FormComponent = ({ onSubmit }) => {
             checked={formState.platform_id === platformType.id}
             onChange={handleInputChange}
           />
-          {platformType.name}
+          {platformType.platform_name}
+          
         </label>
-        ))}
+        )))}
       </div>
-      <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
-          {moduleOptions.map((option) => (
+      <div className="grid grid-cols-2 gap-4 mb-5">
+      <div className="col-span-1">
+          {loading_mod ? (
+      <input name="..."/>
+      ): isError_mod?(
+         <input name="error"/>
+        ):(
+          moduleOptions.map((option) => (
+            <div key={option.id}>
             <label key={option.id} className="flex-1">
               <input
                 type="checkbox"
@@ -149,12 +175,20 @@ const FormComponent = ({ onSubmit }) => {
                 checked={formState.modules.some(module => module.id === option.id)}
                 onChange={handleCheckboxChange}
               />
-              {option.name}
+              {option.module_name}
             </label>
-          ))}
+            <br/>
+            </div>
+          )))}
         </div>
-        <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2 items-center">
-          {EnvironmentOptions.map((option) => (
+        <div className="col-span-1">
+          {loading_env ? (
+      <input name="..."/>
+      ): isError_env?(
+         <input name="error"/>
+        ):(
+          EnvironmentOptions.map((option) => (
+            <div key={option.id}>
             <label key={option.id} className="flex-1">
               <input
                 type="checkbox"
@@ -164,9 +198,12 @@ const FormComponent = ({ onSubmit }) => {
                 checked={formState.environments.some(environment => environment.id === option.id)}
                 onChange={handleCheckboxChange}
               />
-              {option.name}
+              {option.environment_name}
             </label>
-          ))}
+            <br />
+            </div>
+          )))}
+        </div>
         </div>
       <button className="p-2 bg-blue-500 text-white rounded-md">
         Submit

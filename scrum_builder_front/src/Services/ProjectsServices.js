@@ -33,8 +33,20 @@ async function getAllProjects() {
   return await instance.get('Projects/');
 }
 
+async function getBasicPlatforms(){
+  return await instance.get('Basic/api/Basic/Platforms/')
+}
+
+async function getBasicModules(){
+  return await instance.get('Basic/api/Basic/Modules/')
+}
+
+async function getBasicEnvironments(){
+  return await instance.get('Basic/api/Basic/Environments/')
+}
+
 export {
-    getProject, getAllProjects, postProject
+    getProject, getAllProjects, postProject, getBasicPlatforms,getBasicModules,getBasicEnvironments
 }
 
 
