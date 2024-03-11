@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import {useGetBasicPlatforms} from "../hooks/BasicPlatforms";
 import {useGetBasicEnvironments} from "../hooks/BasicEnvironments";
 import {useGetBasicModules} from "../hooks/BasicModules";
+import {useGetBasicProjectTypes} from "../hooks/BasicProjectTypes";
 import Project from './Project';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const FormComponent = ({ onSubmit }) => {
@@ -18,14 +21,15 @@ const FormComponent = ({ onSubmit }) => {
   const {platforms, error: {isError, errorMessage}, loading} = useGetBasicPlatforms();
   const {modules, error_mod: {isError_mod, errorMessage_mod}, loading_mod} = useGetBasicModules();
   const {environments, error_env: {isError_env, errorMessage_env}, loading_env} = useGetBasicEnvironments();
+  const {projectTypes, error_pro: {isError_pro, errorMessage_pro}, loading_pro} = useGetBasicProjectTypes();
   
-  const projectTypeOptions = [
-    { id: 1, name: 'New Implementation' },
-    { id: 2, name: 'Upgrade' },
-    { id: 3, name: 'J2C' },
-    // Add more module options as needed
-  ];
-
+  //const projectTypeOptions = [
+  //  { id: 1, name: 'New Implementation' },
+  //  { id: 2, name: 'Upgrade' },
+  //  { id: 3, name: 'J2C' },
+  //  // Add more module options as needed
+  //];
+  const projectTypeOptions = projectTypes
   const platformTypeOptions=platforms
   const moduleOptions=modules;
   const EnvironmentOptions=environments
@@ -85,6 +89,16 @@ const FormComponent = ({ onSubmit }) => {
     const data = JSON.stringify(formState)
     console.log(data)
 
+    toast.success(`Selected items: ${data}`, {
+      position: 'top-right',
+      autoClose: 3000, // Duration in milliseconds
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+
     setFormState({
         project_name: '',
         project_code: '',
@@ -119,8 +133,14 @@ const FormComponent = ({ onSubmit }) => {
         onChange={handleInputChange}
         className="mb-4 p-1 border border-gray-300 rounded-md"
       />
+      <h3 className="mb-2 font-bold">Project Type</h3>
       <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
-      {projectTypeOptions.map(projectType =>(
+      {loading_pro ? (
+      <input name="..."/>
+      ): isError_pro?(
+         <input name="error"/>
+        ):(
+      projectTypeOptions.map(projectType =>(
         <label key={projectType.id} className="flex-1">
           <input
             type="radio"
@@ -131,12 +151,14 @@ const FormComponent = ({ onSubmit }) => {
             onChange={handleInputChange}
             
           />
-          {projectType.name}
+          {projectType.type_name}
           
         </label>
-        ))}
+        )))}
       </div>
+      <h3 className="mb-2 font-bold">Platform Type</h3>
       <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
+
       {loading ? (
       <input name="..."/>
       ): isError?(
@@ -159,6 +181,9 @@ const FormComponent = ({ onSubmit }) => {
       </div>
       <div className="grid grid-cols-2 gap-4 mb-5">
       <div className="col-span-1">
+      <div>
+          <h3 className="mb-2 font-bold">Modules</h3>
+        </div>
           {loading_mod ? (
       <input name="..."/>
       ): isError_mod?(
@@ -182,6 +207,9 @@ const FormComponent = ({ onSubmit }) => {
           )))}
         </div>
         <div className="col-span-1">
+        <div>
+          <h3 className="mb-2 font-bold">Environments</h3>
+        </div>
           {loading_env ? (
       <input name="..."/>
       ): isError_env?(
@@ -209,7 +237,10 @@ const FormComponent = ({ onSubmit }) => {
         Submit
       </button>
       </form>
+      <ToastContainer />
     </div>
+
+    
   );
 };
 
