@@ -4,6 +4,7 @@ import {useGetBasicEnvironments} from "../hooks/BasicEnvironments";
 import {useGetBasicModules} from "../hooks/BasicModules";
 import {useGetBasicProjectTypes} from "../hooks/BasicProjectTypes";
 import Project from './Project';
+import {postProject} from "../Services/ProjectsServices"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -87,17 +88,39 @@ const FormComponent = ({ onSubmit }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = JSON.stringify(formState)
-    console.log(data)
+      // Check for null values in formState
+    const hasNullValues = Object.values(formState).some(value => value === null || value === '');
 
-    toast.success(`Selected items: ${data}`, {
-      position: 'top-right',
-      autoClose: 3000, // Duration in milliseconds
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    if (hasNullValues) {
+      toast.error('Please fill in all fields');
+      return;
+    }
+
+    postProject(data).then(response =>{
+      if(response.project_name){
+        toast.success(`${response.project_name + " created succesfully"}`, {
+          position: 'top-right',
+          autoClose: 3000, // Duration in milliseconds
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }else{
+        toast.error(`${response.message}`, {
+          position: 'top-right',
+          autoClose: 3000, // Duration in milliseconds
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
+      }
+  
+    })
+
 
     setFormState({
         project_name: '',
