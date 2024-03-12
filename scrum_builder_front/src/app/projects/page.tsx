@@ -12,7 +12,10 @@ import { PageHeader } from "../../components/PageHeader";
 
 
 const cols:ColumnsType<AnyObject> = [
-    {title: 'Project name', dataIndex:'project_name', 
+    {title: 'Project Code', dataIndex:'project_code', 
+    sorter: (a, b) => a.project_name.length - b.project_name.length,
+    filterSearch: true, onFilter: (value:string, record:{[key:string]:string})=>record.name.indexOf(value) === 0},
+    {title: 'Project Name', dataIndex:'project_name', 
       sorter: (a, b) => a.project_name.length - b.project_name.length,
       filterSearch: true, onFilter: (value:string, record:{[key:string]:string})=>record.name.indexOf(value) === 0,
       render: (text:string, record:{[key:string]:string})=>{
@@ -38,8 +41,13 @@ const cols:ColumnsType<AnyObject> = [
 function Page(){
   const {projects, error: {isError, errorMessage}, loading} = useGetAllProjects();
   const [page, setPage] = useState(1);
-  console.log(isError);
-  console.log(loading)
+  
+  const data = projects; 
+  data.map((val:{[key:string]:any})=>{
+    val.created_on = val.created_on.split('T')[0];
+    val.updated_on = val.updated_on ? val.updated_on.split('T')[0] : "";
+  })
+  console.log(data);
   return (
     <AuthProvider>
       <NavBar isLoggedIn={undefined}/>
@@ -49,7 +57,7 @@ function Page(){
         toActionButton="projects/create-project/" textActionButton="Create New Project"/>
        {loading? <h1 font-semibold>Loading...</h1> :
         isError? <h1 font-semibold>{errorMessage}</h1> :
-        <Table columns={cols} dataSource={projects}
+        <Table columns={cols} dataSource={data}
           pagination={{
             current: page,
             pageSize: 10, 
