@@ -13,7 +13,7 @@ export function useGetBasicEnvironments(){
         getBasicEnvironments()
         .then((res)=>{
             setBasicEnvironments(res.data)
-            console.log(res.data)
+
             setLoading(false)
         })
         .catch((err)=>{

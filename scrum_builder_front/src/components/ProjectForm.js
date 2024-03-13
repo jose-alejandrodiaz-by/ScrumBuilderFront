@@ -19,40 +19,18 @@ const FormComponent = ({ onSubmit }) => {
     environments: [],
   });
 
+  //Loading Project Metadata
   const {platforms, error: {isError, errorMessage}, loading} = useGetBasicPlatforms();
   const {modules, error_mod: {isError_mod, errorMessage_mod}, loading_mod} = useGetBasicModules();
   const {environments, error_env: {isError_env, errorMessage_env}, loading_env} = useGetBasicEnvironments();
   const {projectTypes, error_pro: {isError_pro, errorMessage_pro}, loading_pro} = useGetBasicProjectTypes();
   
-  //const projectTypeOptions = [
-  //  { id: 1, name: 'New Implementation' },
-  //  { id: 2, name: 'Upgrade' },
-  //  { id: 3, name: 'J2C' },
-  //  // Add more module options as needed
-  //];
   const projectTypeOptions = projectTypes
   const platformTypeOptions=platforms
   const moduleOptions=modules;
   const EnvironmentOptions=environments
-//
- //const platformTypeOptions = [
- //  { id: 1, name: 'platform 1' },
- //  { id: 2, name: 'platform 2' },
- //  // Add more module options as needed
- //];
-//
-  //const moduleOptions = [
-  //  { id: 1, name: 'Module 1' },
-  //  { id: 2, name: 'Module 2' },
-  //  // Add more module options as needed
-  //];
 
-  //const EnvironmentOptions = [
-  //  { id: 1, name: 'environment1' },
-  //  { id: 2, name: 'environment2' },
-  //  // Add more module options as needed
-  //];
-
+  //Handling FORM data from text boxes and radio buttons
   const handleInputChange = (event) => {
     const value = event.target.name === 'project_type_id' || event.target.name === 'platform_id' 
       ? Number(event.target.value) 
@@ -64,6 +42,7 @@ const FormComponent = ({ onSubmit }) => {
     });
   };
 
+  //Handling FORM data from check boxes
   const handleCheckboxChange = (event) => {
     const { name, value, checked } = event.target;
     const newValue = { id: Number(value) };
@@ -84,7 +63,7 @@ const FormComponent = ({ onSubmit }) => {
   };
   
   
-
+  //Handling action when submit button is clicked
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = JSON.stringify(formState)
@@ -137,6 +116,7 @@ const FormComponent = ({ onSubmit }) => {
       }
   };
 
+  // JSX component returned value
   return (
     <div className="flex flex-col p-8 mr-80 ml-80 bg-white shadow-md rounded-md">
     <form onSubmit={handleSubmit} className="flex flex-col p-9 bg-white shadow-md rounded-md">

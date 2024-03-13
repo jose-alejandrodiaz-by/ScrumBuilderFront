@@ -54,7 +54,6 @@ const LoginForm = () => {
       Cookies.set('jwt_token', token);
 	  //Cookies.set('jwt_refresh', refresh);
 	  //Cookies.set('jwt_expire',TokenExpirationDate.toISOString())
-      console.log('Login successful!');
 
       // Update the context with the retrieved token
       login(AuthUser);

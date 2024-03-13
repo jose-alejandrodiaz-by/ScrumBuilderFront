@@ -53,7 +53,6 @@ export const AuthProvider = ({ children }) => {
         setUser(AuthUser ? { AuthUser } : null);
 		
 		//log the user name
-		console.log(AuthUser)
 
         // Set loading to false as we've checked for the token
         setLoading(false);

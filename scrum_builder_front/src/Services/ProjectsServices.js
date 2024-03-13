@@ -8,9 +8,9 @@ const instance = axios.create({
   timeout: 100000,
   headers:  { Authorization: `Bearer ${token}` }
 })
-const dummyData = '{"project_name":"testFromFront6","project_code":"TFF6","project_type_id":2,"platform_id":1,"modules":[{"id":4}],"environments":[{"id":4}]}'
+
 const postProject = async data => {
-  console.log("data before sending: "+data)
+
   try {
     const response = await instance.post(`Projects/`, data,{
       headers: {
@@ -19,7 +19,7 @@ const postProject = async data => {
     });
 
     // Handle successful response
-    console.log("Project succesfully created")
+
     return response.data;
   } catch (error) {
     // Handle errors

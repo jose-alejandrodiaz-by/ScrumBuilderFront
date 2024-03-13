@@ -13,7 +13,6 @@ const GetProject = () => {
         e.preventDefault();
         try {
             const data = await ProjectsServices.getProject(id); // use the service to get the data
-            console.log(data); // log the data or do something with it
             setInfo(data);
         } catch (error) {
             console.error(error); // handle the error

@@ -71,7 +71,6 @@ const FormComponent = ({ onSubmit }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = JSON.stringify(formState)
-    console.log(data)
 
     setFormState({
         projectName: '',
