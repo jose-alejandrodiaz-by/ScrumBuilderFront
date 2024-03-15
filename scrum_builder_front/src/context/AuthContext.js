@@ -2,11 +2,13 @@
 // context/AuthContext.js
 import { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const router = useRouter();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -75,6 +77,7 @@ export const AuthProvider = ({ children }) => {
     // Clear the user object when the user logs out
     setUser(null);
     Cookies.remove('jwt_token');
+    router.push('/login');
 	//Cookies.remove('jwt_expire');
 	//Cookies.remove('jwt_refresh');
     // Add any additional cleanup or API calls for logout if needed
