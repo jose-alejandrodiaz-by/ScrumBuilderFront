@@ -24,6 +24,18 @@ const Navigation = ({ isLoggedIn }) => {
 
         </li>
         <li>
+            {user ? (
+                <Link href="/tasks" className="hover:text-blue-300">
+                    Tasks
+                </Link>
+                
+            ) : (
+                <div/>
+            )}
+
+        </li>
+        <li>
+          
           {user ? (
             <button
               onClick={logout}
