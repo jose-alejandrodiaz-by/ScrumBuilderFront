@@ -27,3 +27,16 @@ body {
   height: 100vh; /* This will cover the full viewport height */
 }
 
+
+.table-wrapper {
+  height: 600px; /* set a fixed height for the table wrapper */
+  overflow-y: auto; /* enable scrolling */
+}
+
+.ant-table-row {
+  font-size: 11px;
+  height: 5px; /* set a fixed height for each row */
+}
+
+
+

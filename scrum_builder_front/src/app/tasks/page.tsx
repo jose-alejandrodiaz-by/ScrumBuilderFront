@@ -12,27 +12,53 @@ import NavBar from '../../components/NavBar'
 import { PageHeader } from "../../components/PageHeader";
 
 const cols:ColumnsType<AnyObject> = [
-    {title: 'Summary', dataIndex:'summary', 
+    {title: 'Summary', dataIndex:'summary', width:'20%',
     sorter: (a, b) => a.summary.length - b.summary.length,
     filterSearch: true, onFilter: (value:string, record:{[key:string]:string})=>record.name.indexOf(value) === 0},
     {title: 'Description', dataIndex:'description', 
       sorter: (a, b) => a.sumary.length - b.summary.length,
+      width: '35%', // set a fixed width for the column
+      ellipsis: true, // add an ellipsis to the text if it overflows
+      // add a tooltip to show the full text on hover
       filterSearch: true, onFilter: (value:string, record:{[key:string]:string})=>record.name.indexOf(value) === 0,
       render: (text:string, record:{[key:string]:string})=>{
-			  return <Link href={`tasks/${record.id.toString()}/` }>{text}</Link>}
+			  return <Link href={`tasks/${record.id.toString()}/` }>{text}</Link>
+      }
     }, 
-    {title: 'Issue Type', dataIndex:'issue_type_id', render:(record:{[key:string]:string})=>{
-      return record.issue_type_id==='3' ? <td>Task</td> : record.issue_type_id === '6' ? <td>Epic</td> : <td>Story</td>
-    }}, 
-    {title: 'Module', dataIndex:'module_id'}, 
-    {title: 'Environment', dataIndex:'environment_id'}, 
-    {title: 'Platform', dataIndex:'platform_id'}, 
-    {title: 'Project Type', dataIndex:'project_type_id'},
-    {title: 'Version', dataIndex:'version'}, 
-    {title:'Created by', dataIndex:'created_by'}, 
-    {title: 'Created on', dataIndex:'created_on'},
-    {title:'Updated By', dataIndex:'updated_by'}, 
-    {title: 'Updated on', dataIndex:'updated_on'},
+    {title: 'Issue Type', dataIndex:'issue_type_id'
+    , 
+    render:(record)=>{
+      return record=='3' ? <td>Task</td> : record == '6' ? <td>Epic</td> : <td>Story</td>
+    }
+  }, 
+    {title: 'Module', dataIndex:'module_id'
+  //hardcode, remove later
+    ,
+    render:()=>{return 'Documentation'}
+  }, 
+    {title: 'Environment', dataIndex:'environment_id',
+    //hardcode, remove later
+    render:(record)=>{
+      return record == '7' ? <td>PROD</td> : ""
+    }
+    }, 
+    {title: 'Platform', dataIndex:'platform_id',
+    //hardcode, remove later
+    render:(record)=>{
+      return "All"
+    }
+
+    }, 
+    {title: 'Project Type', dataIndex:'project_type_id',
+    //hardcode, remove later
+    render:(record)=>{
+      return "All"
+    }
+  },
+    //{title:'Created by', dataIndex:'created_by'}, 
+    //{title: 'Created on', dataIndex:'created_on'},
+    //{title:'Updated By', dataIndex:'updated_by'}, 
+    //{title: 'Updated on', dataIndex:'updated_on'},
     ]
 
 function page(){
@@ -51,7 +77,9 @@ data.map((val:{[key:string]:any})=>{
       <h1>Tasks</h1>
        {loading? <h1 font-semibold>Loading...</h1> :
         isError? <h1 font-semibold>{errorMessage}</h1> :
-        <Table columns={cols} dataSource={data}
+        // JSX code
+<div className="table-wrapper">
+<Table columns={cols} dataSource={data}
           pagination={{
             current: page,
             pageSize: 10, 
@@ -61,6 +89,8 @@ data.map((val:{[key:string]:any})=>{
           }}
           scroll={{ y: 400 }}
         />
+</div>
+
       } 
       </div>
     </AuthProvider>
