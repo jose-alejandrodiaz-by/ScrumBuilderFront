@@ -54,7 +54,7 @@ async function getBasicEnvironments(){
 }
 
 async function getBasicProjectTypes(){
-  return await instance.get('Basic/project_types/')
+  return await instance.get('Basic/ProjectTypes/')
 }
 
 export {

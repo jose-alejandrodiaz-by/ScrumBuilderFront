@@ -15,6 +15,7 @@ const FormComponent = ({ onSubmit }) => {
     project_code: '',
     project_type_id: '',
     platform_id: '',
+    region_id:'',
     modules: [],
     environments: [],
   });
@@ -30,9 +31,15 @@ const FormComponent = ({ onSubmit }) => {
   const moduleOptions=modules;
   const EnvironmentOptions=environments
 
+  const regions = [
+    {id:1,name:'AMER'},
+    {id:2,name:'APAC'},
+    {id:3,name:'EMEA'}
+  ]
+
   //Handling FORM data from text boxes and radio buttons
   const handleInputChange = (event) => {
-    const value = event.target.name === 'project_type_id' || event.target.name === 'platform_id' 
+    const value = event.target.name === 'project_type_id' || event.target.name === 'platform_id' || event.target.name === 'region_id'
       ? Number(event.target.value) 
       : event.target.value;
   
@@ -106,6 +113,7 @@ const FormComponent = ({ onSubmit }) => {
         project_code: '',
         project_type_id: '',
         platform_id: '',
+        region_id:'',
         modules: [],
         environments: [],
       });
@@ -123,7 +131,7 @@ const FormComponent = ({ onSubmit }) => {
       <input
         type="text"
         name="project_name"
-        placeholder="Project Name"
+        placeholder="Medtronic TMS 2022.1.0"
         value={formState.project_name}
         onChange={handleInputChange}
         className="mb-4 p-1 border border-gray-300 rounded-md"
@@ -131,7 +139,7 @@ const FormComponent = ({ onSubmit }) => {
       <input
         type="text"
         name="project_code"
-        placeholder="Project Code"
+        placeholder="MTTM22"
         value={formState.project_code}
         onChange={handleInputChange}
         className="mb-4 p-1 border border-gray-300 rounded-md"
@@ -159,6 +167,7 @@ const FormComponent = ({ onSubmit }) => {
         </label>
         )))}
       </div>
+      
       <h3 className="mb-2 font-bold">Platform Type</h3>
       <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
 
@@ -182,6 +191,31 @@ const FormComponent = ({ onSubmit }) => {
         </label>
         )))}
       </div>
+
+      <h3 className="mb-2 font-bold">Region</h3>
+      <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
+      {loading_pro ? (
+      <input name="..."/>
+      ): isError_pro?(
+         <input name="error"/>
+        ):(
+      regions.map(region =>(
+        <label key={region.id} className="flex-1">
+          <input
+            type="radio"
+            name="region_id"
+            style={{ marginRight: '0.5rem' }} 
+            value= {region.id}
+            checked={formState.region_id === region.id}
+            onChange={handleInputChange}
+            
+          />
+          {region.name}
+          
+        </label>
+        )))}
+      </div>
+
       <div className="grid grid-cols-2 gap-4 mb-5">
       <div className="col-span-1">
       <div>
