@@ -3,7 +3,8 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
+import { getJWTTokenObject } from '../common_tools/getJWTTokenObject';
+
 
 const AuthContext = createContext();
 
@@ -14,52 +15,35 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     // Check if the user is authenticated (e.g., check for a token in cookies)
-    var token = Cookies.get('jwt_token');
-	//const accessTokenExpiry = new Date(Cookies.get('jwt_expire'));
-	//const currentTime = new Date();
-	
+    let token = Cookies.get('jwt_token');
+
+    const currentTime = Math.floor(Date.now() / 1000);
+    const payload = getJWTTokenObject()
+    console.log(payload.exp)
+
+        if (currentTime>payload.exp){
+          Cookies.remove('jwt_token')
+          router.push('/login')
+        }
 
     // Make an API call with the JWT header token so that we receive the logged user which is authenticated from the DB
     // This ensures the User receives the permission from the database directly
     const fetchData = async () => {
       try {
-		  /** 
-		if(currentTime >= accessTokenExpiry){
-		  const refreshToken = Cookies.get('jwt_refresh');
-          const response_refresh = await axios.post('http://127.0.0.1:8000/api/token/refresh/', {
-            refresh: refreshToken,
-          });
-		  
-		  token = response_refresh.data.access;
-		  const TokenExpirationDate = new Date(currentTime.getTime() + 5 * 60 * 1000);
-		  Cookies.set('jwt_expire',TokenExpirationDate.toISOString());
-		  
-		  Cookies.set('jwt_token', token);
-		  console.log('JWT tokken refreshed');
-		}else{
-			console.log("wrong expiry date or token has not expired yet", " ", accessTokenExpiry, " curent date ", new Date());
-		}
-		*/
-		
-		/**   
-        const response = await axios.get('http://127.0.0.1:8000/user', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-	  */
+        
 
         const AuthUser = token;
 
+
         // Set the user object if the token is present, else clear the user object
         setUser(AuthUser ? { AuthUser } : null);
-		
-		//log the user name
+
+        //log the user name
 
         // Set loading to false as we've checked for the token
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching user data:', error);
+        //console.error('Error fetching user data:', error);
         // Set loading to false even if there's an error
         setLoading(false);
       }
@@ -78,8 +62,8 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     Cookies.remove('jwt_token');
     router.push('/login');
-	//Cookies.remove('jwt_expire');
-	//Cookies.remove('jwt_refresh');
+    //Cookies.remove('jwt_expire');
+    //Cookies.remove('jwt_refresh');
     // Add any additional cleanup or API calls for logout if needed
   };
 

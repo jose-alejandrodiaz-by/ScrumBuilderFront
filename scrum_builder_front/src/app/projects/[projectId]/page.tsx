@@ -9,11 +9,11 @@ import { AuthProvider } from "../../../context/AuthContext";
 export default function Page(){
     const params = useParams();
     const { project, loading, error:{isError, errorMessage}} = useGetProject(params.projectId)
-    console.log(project)
-    console.log(loading)
+    //console.log(project)
+    //console.log(loading)
     return (
         <AuthProvider>
-            <NavBar isLoggedIn={undefined}/>
+            <NavBar />
                 {loading ? <h1>Loading...</h1> :
                 isError ? <h1>{errorMessage}</h1> : 
                 <Project project={project.project_name ? project : testproject} /> 

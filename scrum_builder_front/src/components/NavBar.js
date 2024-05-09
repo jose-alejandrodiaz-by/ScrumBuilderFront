@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 
-const Navigation = ({ isLoggedIn }) => {
+const Navigation = () => {
     const { user, logout } = useAuth();
     const useStage=1
   return (

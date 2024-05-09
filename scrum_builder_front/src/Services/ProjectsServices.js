@@ -1,10 +1,12 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { ApiURL } from '../common_tools/ApiURL';
 
 const token = Cookies.get('jwt_token');
 
 const instance = axios.create({
-  baseURL: "https://localhost:7041/api/",
+  //baseURL: "https://localhost:7041/api/",
+  baseURL:`https://${ApiURL}/api/`,
   timeout: 100000,
   headers:  { Authorization: `Bearer ${token}` }
 })
@@ -23,7 +25,7 @@ const postProject = async data => {
     return response.data;
   } catch (error) {
     // Handle errors
-    console.error('Error posting project:', error.message);
+    //console.error('Error posting project:', error.message);
     return error;
   }
 };

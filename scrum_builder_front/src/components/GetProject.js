@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import ProjectsServices from '../Services/ProjectsServices'; // import the service
 import Project from './Project';
 import  testproject from '../../testingResources/projectObject'
 
 const GetProject = () => {
     const [id, setId] = useState('');
-    const router = useRouter();
+
     const [info, setInfo] = useState(testproject);
 
     const getData = async (e) => {
@@ -15,7 +14,7 @@ const GetProject = () => {
             const data = await ProjectsServices.getProject(id); // use the service to get the data
             setInfo(data);
         } catch (error) {
-            console.error(error); // handle the error
+            //console.error(error); // handle the error
         }
     }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import {getAllTasks} from "../Services/ProjectsServices";
-import { Project } from "../types/Projects";
+
 
 export function useGetAllTasks(){
     const [tasks, setAllTasks] = useState([]);

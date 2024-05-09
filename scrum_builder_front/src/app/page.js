@@ -7,7 +7,7 @@ import Home from './home'
 import NavBar from '../components/NavBar'
 
 
-const MyApp = ({ Component, pageProps }) => {
+const MyApp = () => {
   
   return (
     <AuthProvider>

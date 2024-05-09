@@ -19,13 +19,13 @@ const cols:ColumnsType<AnyObject> = [
       sorter: (a, b) => a.project_name.length - b.project_name.length,
       filterSearch: true, onFilter: (value:string, record:{[key:string]:string})=>record.name.indexOf(value) === 0,
       render: (text:string, record:{[key:string]:string})=>{
-			  return <Link href={`projects/${record.id.toString()}/` }>{text}</Link>}
+        return <Link href={`projects/${record.id.toString()}/`}>{text}</Link>}
     }, 
     {title: 'Project Type', dataIndex:'project_type_id', render:(record:{[key:string]:string})=>{
       return record.project_type_id==='1' ? <td>New Implementation</td> : record.project_type_id === '2' ? <td>Upgrade</td> : <td>J2C</td>
     }}, 
-    {title: 'Platform', dataIndex:'platform_id', render:(record:{[key:string]:any})=>{
-      return record.platform_id === 1 ? <td>PC</td> : <td>AZ</td>
+    {title: 'Platform', dataIndex:'platform_id', render:(record:{[key:string]:string})=>{
+      return record.platform_id === '1' ? <td>PC</td> : <td>AZ</td>
     }}, 
     {title:'Created by', dataIndex:'created_by'}, 
     {title: 'Created on', dataIndex:'created_on'},
@@ -43,14 +43,14 @@ function Page(){
   const [page, setPage] = useState(1);
   
   const data = projects; 
-  data.map((val:{[key:string]:any})=>{
+  data.map((val:{[key:string]:string})=>{
     val.created_on = val.created_on.split('T')[0];
     val.updated_on = val.updated_on ? val.updated_on.split('T')[0] : "";
   })
-  console.log(data);
+  //console.log(data);
   return (
     <AuthProvider>
-      <NavBar isLoggedIn={undefined}/>
+      <NavBar />
       <div className="px-2">
       <PageHeader title={"Projects"} goBack={true} 
         actionButton={true} hasCrumbs={false}
@@ -71,6 +71,6 @@ function Page(){
       </div>
     </AuthProvider>
   );
-};
+}
 
 export default Page;

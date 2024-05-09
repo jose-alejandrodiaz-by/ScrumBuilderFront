@@ -1,14 +1,13 @@
 'use client';
 // app/page.js
 //import Head from 'next/head';
-import Link from 'next/link';
 //import styles from '../styles/Home.module.css';
 //import { AuthProvider } from '../context/AuthContext';
 import { useAuth } from '../context/AuthContext';
 
 export default function Home() {
-  const { user, logout } = useAuth();
-  console.log(user + " log")
+  const { user} = useAuth();
+  //console.log(user + " log")
  return (
     <div className="flex flex-col items-center justify-center h-screen space-y-4">
       
