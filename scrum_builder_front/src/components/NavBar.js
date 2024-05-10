@@ -9,7 +9,7 @@ const Navigation = () => {
     <>
     {useStage ? (
 
-      <nav className="sticky top-0 bg-gray-800 text-white p-4 z-50">
+      <nav className="sticky top-0 bg-gray-800 text-white p-4 z-50 w-screen">
       <ul className="flex space-x-4">
         <li>
           <Link href="/" className="hover:text-blue-300">

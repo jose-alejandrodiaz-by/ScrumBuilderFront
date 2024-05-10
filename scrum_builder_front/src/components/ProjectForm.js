@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
+import { useEffect } from 'react';
 import { useGetBasicPlatforms } from "../hooks/BasicPlatforms";
 import { useGetBasicEnvironments } from "../hooks/BasicEnvironments";
 import { useGetBasicModules } from "../hooks/BasicModules";
@@ -7,7 +8,7 @@ import { useGetBasicProjectTypes } from "../hooks/BasicProjectTypes";
 import { postProject } from "../Services/ProjectsServices"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useAuth } from '../context/AuthContext';
 
 const FormComponent = () => {
   const [formState, setFormState] = useState({
@@ -19,29 +20,36 @@ const FormComponent = () => {
     modules: [],
     environments: [],
   });
-
-  //Loading Project Metadata
-  // const {platforms, error: {isError, errorMessage}, loading} = useGetBasicPlatforms();
-  // const {modules, error_mod: {isError_mod, errorMessage_mod}, loading_mod} = useGetBasicModules();
-  // const {environments, error_env: {isError_env, errorMessage_env}, loading_env} = useGetBasicEnvironments();
-  // const {projectTypes, error_pro: {isError_pro, errorMessage_pro}, loading_pro} = useGetBasicProjectTypes();
-
-  const { platforms, error: { isError }, loading } = useGetBasicPlatforms();
-  const { modules, error_mod: { isError_mod }, loading_mod } = useGetBasicModules();
-  const { environments, error_env: { isError_env }, loading_env } = useGetBasicEnvironments();
-  const { projectTypes, error_pro: { isError_pro }, loading_pro } = useGetBasicProjectTypes();
-
-
-  const projectTypeOptions = projectTypes
-  const platformTypeOptions = platforms
-  const moduleOptions = modules;
-  const EnvironmentOptions = environments
-
+  const { logout } = useAuth();
   const regions = [
     { id: 1, name: 'AMER' },
     { id: 2, name: 'APAC' },
     { id: 3, name: 'EMEA' }
   ]
+
+  const [projectTypeOptions, setProjectTypeOptions] = useState([])
+  const [platformTypeOptions, setPlatformTypeOptions] = useState([])
+  const [moduleOptions, setModuleOptions] = useState([])
+  const [EnvironmentOptions, setEnvironmentOptions] = useState([])
+  
+
+
+  const { platforms, error: { isError }, loading} =  useGetBasicPlatforms();
+  const { modules, error_mod: { isError_mod }, loading_mod} = useGetBasicModules();
+  const { environments, error_env: { isError_env }, loading_env} = useGetBasicEnvironments();
+  const { projectTypes, error_pro: { isError_pro }, loading_pro } =  useGetBasicProjectTypes();
+  
+
+  useEffect( () => {
+    
+    setProjectTypeOptions(projectTypes)
+    setPlatformTypeOptions(platforms)
+    setModuleOptions(modules)
+    setEnvironmentOptions(environments)
+
+
+  }),[];
+
 
   //Handling FORM data from text boxes and radio buttons
   const handleInputChange = (event) => {
@@ -71,9 +79,10 @@ const FormComponent = () => {
         ...prevState,
         [name]: prevState[name].filter(item => item.id !== newValue.id),
       };
-
+  
     });
-  };
+
+  }
 
 
   //Handling action when submit button is clicked
@@ -108,7 +117,11 @@ const FormComponent = () => {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-        });
+        }
+         );
+         if((response.message).includes("401")){
+          logout()
+         }
       }
 
     })
@@ -130,8 +143,8 @@ const FormComponent = () => {
 
   // JSX component returned value
   return (
-    <div className="flex flex-col p-8 mr-80 ml-80 bg-white shadow-md rounded-md">
-      <form onSubmit={handleSubmit} className="flex flex-col p-9 bg-white shadow-md rounded-md">
+    <div className="flex p-8 bg-white shadow-md rounded-md justify-center">
+      <form onSubmit={handleSubmit} className="flex flex-col p-9 w-[500px] mb-10 bg-white shadow-md rounded-md ">
         <input
           type="text"
           name="project_name"
@@ -284,5 +297,6 @@ const FormComponent = () => {
 
   );
 };
+
 
 export default FormComponent;

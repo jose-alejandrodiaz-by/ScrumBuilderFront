@@ -2,14 +2,24 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { ApiURL } from '../common_tools/ApiURL';
 
-const token = Cookies.get('jwt_token');
+let instance=null
 
-const instance = axios.create({
-  //baseURL: "https://localhost:7041/api/",
-  baseURL:`https://${ApiURL}/api/`,
-  timeout: 100000,
-  headers:  { Authorization: `Bearer ${token}` }
-})
+function getToken() {
+  return Cookies.get('jwt_token');
+}
+
+const UpdateToken =()=>{
+   instance = axios.create({
+    //baseURL: "https://localhost:7041/api/",
+    baseURL:`https://${ApiURL}/api/`,
+    timeout: 100000,
+    headers:  { Authorization: `Bearer ${getToken()}` }
+  })
+  console.log(getToken)
+}
+
+UpdateToken()
+
 
 const postProject = async data => {
 
@@ -60,7 +70,7 @@ async function getBasicProjectTypes(){
 }
 
 export {
-    getProject, getAllProjects, postProject, getBasicPlatforms,getBasicModules,getBasicEnvironments,getBasicProjectTypes, getAllTasks
+    getProject, getAllProjects, postProject, getBasicPlatforms,getBasicModules,getBasicEnvironments,getBasicProjectTypes, getAllTasks, UpdateToken
 }
 
 

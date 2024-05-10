@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
 
     const currentTime = Math.floor(Date.now() / 1000);
     const payload = getJWTTokenObject()
-    console.log(payload.exp)
 
         if (currentTime>payload.exp){
           Cookies.remove('jwt_token')

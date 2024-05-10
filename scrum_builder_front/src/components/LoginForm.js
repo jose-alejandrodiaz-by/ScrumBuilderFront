@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../context/AuthContext';
 import {ApiURL} from '../common_tools/ApiURL'
-import {getJWTTokenObject} from '../common_tools/getJWTTokenObject'
+import { UpdateToken } from '../Services/ProjectsServices';
 
 
 const LoginForm = () => {
@@ -15,6 +15,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (user && !loading) {
+      UpdateToken()
       router.push('/');
     }
   }, [user, loading, router]);

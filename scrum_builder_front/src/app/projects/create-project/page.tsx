@@ -10,9 +10,13 @@ import NavBar from "../../../components/NavBar";
 export default function Page(){
     return (
     <AuthProvider>
+        <div className="flex-row">
         <NavBar />
         <PageHeader title={"Create Project"} goBack={true} actionButton={false} hasCrumbs={false}/> 
+        <div className="">
         <ProjectForm/>
+        </div>
+        </div>
     </AuthProvider>
     )
 }
