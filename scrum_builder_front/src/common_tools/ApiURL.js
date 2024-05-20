@@ -1,1 +1,1 @@
-export const ApiURL = "localhost:7041"
+export const ApiURL = "byobsb.azurewebsites.net"

@@ -15,7 +15,6 @@ const UpdateToken =()=>{
     timeout: 100000,
     headers:  { Authorization: `Bearer ${getToken()}` }
   })
-  console.log(getToken)
 }
 
 UpdateToken()

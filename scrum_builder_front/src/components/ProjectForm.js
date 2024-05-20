@@ -1,5 +1,4 @@
-import React, { use, useState } from 'react';
-import { useEffect } from 'react';
+import React, { useEffect,useState } from 'react';
 import { useGetBasicPlatforms } from "../hooks/BasicPlatforms";
 import { useGetBasicEnvironments } from "../hooks/BasicEnvironments";
 import { useGetBasicModules } from "../hooks/BasicModules";
@@ -48,7 +47,7 @@ const FormComponent = () => {
     setEnvironmentOptions(environments)
 
 
-  }),[];
+  });
 
 
   //Handling FORM data from text boxes and radio buttons
