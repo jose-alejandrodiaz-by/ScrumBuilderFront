@@ -5,6 +5,7 @@ import { AuthProvider } from '../context/AuthContext';
 import Home from './home'
 
 import NavBar from '../components/NavBar'
+import '../style/main.css'
 
 
 const MyApp = () => {
@@ -12,7 +13,7 @@ const MyApp = () => {
   return (
     <AuthProvider>
     <NavBar/>
-    <div className="flex flex-col items-center justify-center h-screen space-y-4">
+    <div className="container">
       <Home/>
     </div>
     

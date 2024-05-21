@@ -8,6 +8,10 @@ import { postProject } from "../Services/ProjectsServices"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from '../context/AuthContext';
+import '../style/main.css'
+import { useGetData } from '../hooks/useGetData';
+import {getBasicPlatforms} from "../Services/ProjectsServices";
+
 
 const FormComponent = () => {
   const [formState, setFormState] = useState({
@@ -38,15 +42,15 @@ const FormComponent = () => {
   const { environments, error_env: { isError_env }, loading_env} = useGetBasicEnvironments();
   const { projectTypes, error_pro: { isError_pro }, loading_pro } =  useGetBasicProjectTypes();
   
+  
+
+
 
   useEffect( () => {
-    
     setProjectTypeOptions(projectTypes)
     setPlatformTypeOptions(platforms)
     setModuleOptions(modules)
     setEnvironmentOptions(environments)
-
-
   });
 
 
@@ -55,7 +59,8 @@ const FormComponent = () => {
     const value = event.target.name === 'project_type_id' || event.target.name === 'platform_id' || event.target.name === 'region_id'
       ? Number(event.target.value)
       : event.target.value;
-
+      console.log(event);
+      console.log(value);
     setFormState({
       ...formState,
       [event.target.name]: value,
@@ -140,8 +145,11 @@ const FormComponent = () => {
 
   };
 
+console.log(formState);
+
   // JSX component returned value
   return (
+    <div className='content'>
     <div className="flex p-8 bg-white shadow-md rounded-md justify-center">
       <form onSubmit={handleSubmit} className="flex flex-col p-9 w-[500px] mb-10 bg-white shadow-md rounded-md ">
         <input
@@ -150,7 +158,7 @@ const FormComponent = () => {
           placeholder="Medtronic TMS 2022.1.0"
           value={formState.project_name}
           onChange={handleInputChange}
-          className="mb-4 p-1 border border-gray-300 rounded-md"
+          
         />
         <input
           type="text"
@@ -158,7 +166,6 @@ const FormComponent = () => {
           placeholder="MTTM22"
           value={formState.project_code}
           onChange={handleInputChange}
-          className="mb-4 p-1 border border-gray-300 rounded-md"
         />
         <h3 className="mb-2 font-bold">Project Type</h3>
         <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
@@ -167,24 +174,21 @@ const FormComponent = () => {
           ) : isError_pro ? (
             <input name="error" />
           ) : (
-            projectTypeOptions.map(projectType => (
-              <label key={projectType.id} className="flex-1">
-                <input
-                  type="radio"
-                  name="project_type_id"
-                  style={{ marginRight: '0.5rem' }}
-                  value={projectType.id}
-                  checked={formState.project_type_id === projectType.id}
-                  onChange={handleInputChange}
-
-                />
-                {projectType.type_name}
-
-              </label>
-            )))}
+            <select onChange={(event)=>{setFormState({
+              ...formState,
+              "project_type_id": event.target.value,
+                })}} 
+              value={projectTypeOptions.project_name}
+            >
+              <option key={0}>Select a Project Type</option>
+              {projectTypeOptions.map(projectType => (
+                <option key={projectType.id} value={projectType.id}>{projectType.type_name}</option>
+              ))}
+					</select>
+            )}
         </div>
 
-        <h3 className="mb-2 font-bold">Platform Type</h3>
+        <h3>Platform Type</h3>
         <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
 
           {loading ? (
@@ -192,50 +196,42 @@ const FormComponent = () => {
           ) : isError ? (
             <input name="error" />
           ) : (
-            platformTypeOptions.map(platformType => (
-              <label key={platformType.id} className="flex-1">
-                <input
-                  type="radio"
-                  style={{ marginRight: '0.5rem' }}
-                  name="platform_id"
-                  value={platformType.id}
-                  checked={formState.platform_id === platformType.id}
-                  onChange={handleInputChange}
-                />
-                {platformType.platform_name}
-
-              </label>
-            )))}
+            <select onChange={(event)=>{setFormState({
+              ...formState,
+              "platform_id": event.target.value,
+                })}} 
+              value={formState.project_name}>
+            <option key={0}>Select a Platform Type</option>
+						{platformTypeOptions.map(platformType => (
+							<option key={platformType.id} value={platformType.id}>{platformType.platform_name}</option>
+						))}
+					</select>
+            )}
         </div>
 
-        <h3 className="mb-2 font-bold">Region</h3>
+        <h3>Region</h3>
         <div className="flex flex-col sm:flex-row mb-4 space-y-2 sm:space-y-0 sm:space-x-2">
           {loading_pro ? (
             <input name="..." />
           ) : isError_pro ? (
             <input name="error" />
           ) : (
-            regions.map(region => (
-              <label key={region.id} className="flex-1">
-                <input
-                  type="radio"
-                  name="region_id"
-                  style={{ marginRight: '0.5rem' }}
-                  value={region.id}
-                  checked={formState.region_id === region.id}
-                  onChange={handleInputChange}
-
-                />
-                {region.name}
-
-              </label>
-            )))}
+            <select onChange={(event)=>{setFormState({
+              ...formState,
+              "region_id": event.target.value,
+            });}} value={formState.project_name}>
+              <option key={0}>Select a Region</option>
+              {regions.map(region => (
+                <option key={region.id} value={region.id}>{region.name}</option>
+              ))}
+					</select>
+        )}
         </div>
 
         <div className="grid grid-cols-2 gap-4 mb-5">
           <div className="col-span-1">
             <div>
-              <h3 className="mb-2 font-bold">Modules</h3>
+              <h3>Modules</h3>
             </div>
             {loading_mod ? (
               <input name="..." />
@@ -261,7 +257,7 @@ const FormComponent = () => {
           </div>
           <div className="col-span-1">
             <div>
-              <h3 className="mb-2 font-bold">Environments</h3>
+              <h3>Environments</h3>
             </div>
             {loading_env ? (
               <input name="..." />
@@ -286,14 +282,14 @@ const FormComponent = () => {
               )))}
           </div>
         </div>
-        <button className="p-2 bg-blue-500 text-white rounded-md">
+        <button>
           Submit
         </button>
       </form>
       <ToastContainer />
     </div>
 
-
+    </div>  
   );
 };
 
